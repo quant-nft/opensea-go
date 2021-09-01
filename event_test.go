@@ -1,0 +1,1 @@
+package opensea_go
