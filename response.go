@@ -43,12 +43,13 @@ type AssetEvent struct {
 }
 
 const (
-	EventTypeTransfer  = "transfer"
-	EventTypeList      = "created"
-	EventTypeBid       = "bid_entered"
-	EventTypeBidCancel = "bid_withdrawn"
-	EventTypeSale      = "successful"
-	EventTypeOffer     = "offer_entered"
+	EventTypeTransfer   = "transfer"
+	EventTypeList       = "created"
+	EventTypeListCancel = "cancelled"
+	EventTypeBid        = "bid_entered"
+	EventTypeBidCancel  = "bid_withdrawn"
+	EventTypeSale       = "successful"
+	EventTypeOffer      = "offer_entered"
 )
 
 type Asset struct {
@@ -164,6 +165,10 @@ func (ae AssetEvent) ToEvent() Event {
 		e.To = ae.ToAccount.String()
 	case EventTypeList:
 		e.Type = EventList
+		e.From = ae.FromAccount.String()
+		e.Price = toEther(ae.EndingPrice, ae.PaymentToken)
+	case EventTypeListCancel:
+		e.Type = EventListCancel
 		e.From = ae.FromAccount.String()
 		e.Price = toEther(ae.EndingPrice, ae.PaymentToken)
 	case EventTypeBid:

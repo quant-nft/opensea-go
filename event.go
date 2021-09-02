@@ -31,6 +31,9 @@ const (
 	EventTransfer  = "Transfer"
 	EventMint      = "Mint"
 	EventList      = "List"
+	// EventListCancel is list cancel, OpenSea display "Cancel".
+	// We display "List Cancel", to distinguish from "Bid Cancel"
+	EventListCancel = "List Cancel"
 )
 
 type Layout struct {
@@ -87,6 +90,13 @@ func (e Event) FormatDing(layout Layout) string {
 			` 铸造完成 (Mint)
   接收方: %s`,
 			e.To,
+		)
+	case EventListCancel:
+		content += fmt.Sprintf(
+			` 取消拍卖(List Cancel)
+  卖家: %s
+  价格: %s`,
+			e.From, e.Price,
 		)
 	case EventList:
 		content += fmt.Sprintf(
@@ -164,6 +174,13 @@ func (e Event) FormatDiscord(layout Layout) string {
   价格: __**%s**__`,
 			e.From, e.Price,
 		)
+	case EventListCancel:
+		content += fmt.Sprintf(
+			` **取消拍卖** (List Cancel)
+  卖家: %s
+  价格: __**%s**__`,
+			e.From, e.Price,
+		)
 	default:
 	}
 	content += fmt.Sprintf("\n  时间: %s", e.Date)
@@ -225,6 +242,13 @@ func (e Event) FormatTelegram(layout Layout) string {
 	case EventList:
 		content += fmt.Sprintf(
 			` 拍卖(List)
+  卖家: %s
+  价格: %s`,
+			e.From, e.Price,
+		)
+	case EventListCancel:
+		content += fmt.Sprintf(
+			` 取消拍卖(List Cancel)
   卖家: %s
   价格: %s`,
 			e.From, e.Price,
