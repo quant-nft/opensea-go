@@ -1,5 +1,7 @@
 package opensea_go
 
+import "sort"
+
 type Trait struct {
 	TraitType string  `json:"traitType" bson:"trait_type"`
 	Value     string  `json:"value" bson:"value"`
@@ -14,6 +16,7 @@ type Meta struct {
 
 type Rarity struct {
 	TokenId    int     `json:"tokenId" bson:"token_id"`
+	Rank       int     `json:"rank" bson:"rank"`
 	Score      float64 `json:"score" bson:"score"`
 	Attributes []Trait `json:"attributes" bson:"attributes"`
 }
@@ -51,5 +54,21 @@ func RarityScore(metas []Meta) []Rarity {
 			Attributes: metas[i].Attributes,
 		})
 	}
+	sort.Sort(byScore(rarities))
+	for i := 0; i < len(rarities); i++ {
+		rarities[i].Rank = i + 1
+	}
 	return rarities
+}
+
+type byScore []Rarity
+
+func (s byScore) Len() int {
+	return len(s)
+}
+func (s byScore) Swap(i, j int) {
+	s[i], s[j] = s[j], s[i]
+}
+func (s byScore) Less(i, j int) bool {
+	return s[i].Score < s[j].Score
 }
