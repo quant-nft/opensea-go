@@ -8,14 +8,21 @@ import (
 
 func TestRarityScore(t *testing.T) {
 	tests := [][]Meta{
+		// one NFT series
 		{
 			{
-				{TraitType: "A", Value: "a1"},
-				{TraitType: "B", Value: "b1"},
+				TokenId: 1,
+				Attributes: []Trait{
+					{TraitType: "A", Value: "a1"},
+					{TraitType: "B", Value: "b1"},
+				},
 			},
 			{
-				{TraitType: "A", Value: "a2"},
-				{TraitType: "B", Value: "b1"},
+				TokenId: 2,
+				Attributes: []Trait{
+					{TraitType: "A", Value: "a2"},
+					{TraitType: "B", Value: "b1"},
+				},
 			},
 		},
 	}
