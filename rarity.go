@@ -54,7 +54,7 @@ func RarityScore(metas []Meta) []Rarity {
 			Attributes: metas[i].Attributes,
 		})
 	}
-	sort.Sort(byScore(rarities))
+	sort.Sort(sort.Reverse(byScore(rarities)))
 	for i := 0; i < len(rarities); i++ {
 		rarities[i].Rank = i + 1
 	}
