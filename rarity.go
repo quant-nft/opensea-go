@@ -1,6 +1,9 @@
 package opensea_go
 
-import "sort"
+import (
+	"fmt"
+	"sort"
+)
 
 type Trait struct {
 	TraitType string  `json:"traitType" bson:"trait_type"`
@@ -19,6 +22,63 @@ type Rarity struct {
 	Rank       int     `json:"rank" bson:"rank"`
 	Score      float64 `json:"score" bson:"score"`
 	Attributes []Trait `json:"attributes" bson:"attributes"`
+}
+
+const (
+	columnsDing     = 4
+	columnsDiscord  = 4
+	columnsTelegram = 4
+)
+
+func (r Rarity) FormatDing() string {
+	content := fmt.Sprintf(`
+  稀有度排名: %d
+  稀有度得分: %2.f`,
+		r.Rank, r.Score,
+	)
+	for i, trait := range r.Attributes {
+		if i%columnsDing == 0 {
+			content += "\n"
+		} else {
+			content += "\t"
+		}
+		content += fmt.Sprintf("%s: %.2f", trait.TraitType, trait.Score)
+	}
+	return content
+}
+
+func (r Rarity) FormatDiscord() string {
+	content := fmt.Sprintf(`
+  稀有度排名: **%d**
+  稀有度得分: %2.f`,
+		r.Rank, r.Score,
+	)
+	for i, trait := range r.Attributes {
+		if i%columnsDiscord == 0 {
+			content += "\n"
+		} else {
+			content += "\t"
+		}
+		content += fmt.Sprintf("%s: %.2f", trait.TraitType, trait.Score)
+	}
+	return content
+}
+
+func (r Rarity) FormatTelegram() string {
+	content := fmt.Sprintf(`
+  稀有度排名: %d
+  稀有度得分: %2.f`,
+		r.Rank, r.Score,
+	)
+	for i, trait := range r.Attributes {
+		if i%columnsTelegram == 0 {
+			content += "\n"
+		} else {
+			content += "\t"
+		}
+		content += fmt.Sprintf("%s: %.2f", trait.TraitType, trait.Score)
+	}
+	return content
 }
 
 // RarityScore calculate the rarity score like rarity.tools
