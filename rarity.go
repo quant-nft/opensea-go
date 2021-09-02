@@ -1,10 +1,10 @@
 package opensea_go
 
 type Trait struct {
-	TraitType string
-	Value     string
-	Percent   float64
-	Score     float64
+	TraitType string  `json:"traitType" bson:"trait_type"`
+	Value     string  `json:"value" bson:"value"`
+	Percent   float64 `json:"percent" bson:"percent"`
+	Score     float64 `json:"score" bson:"score"`
 }
 
 type Meta []Trait
