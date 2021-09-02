@@ -148,7 +148,6 @@ func (ae AssetEvent) ToEvent() Event {
 		Contract:        common.HexToAddress(ae.Asset.AssetContract.Address).Hex(),
 		Name:            ae.Asset.Name,
 		Id:              ae.Asset.TokenId,
-		From:            ae.FromAccount.String(),
 		Date:            toBeijingTime(ae.CreatedDate),
 		CreatedAt:       time.Now(),
 		ImagePreviewUrl: ae.Asset.ImagePreviewUrl,
@@ -161,14 +160,19 @@ func (ae AssetEvent) ToEvent() Event {
 			e.Type = EventTransfer
 		}
 		// Mint 和 Transfer 都没有价格需要展示
+		e.From = ae.FromAccount.String()
+		e.To = ae.ToAccount.String()
 	case EventTypeList:
 		e.Type = EventList
+		e.From = ae.FromAccount.String()
 		e.Price = toEther(ae.EndingPrice, ae.PaymentToken)
 	case EventTypeBid:
 		e.Type = EventBid
+		e.From = ae.FromAccount.String()
 		e.Price = toEther(ae.BidAmount, ae.PaymentToken)
 	case EventTypeBidCancel:
 		e.Type = EventBidCancel
+		e.From = ae.FromAccount.String()
 		e.Price = toEther(ae.TotalPrice, ae.PaymentToken)
 	case EventTypeSale:
 		e.Type = EventSale
@@ -177,6 +181,7 @@ func (ae AssetEvent) ToEvent() Event {
 		e.To = ae.WinnerAccount.String()
 	case EventTypeOffer:
 		e.Type = EventOffer
+		e.From = ae.FromAccount.String()
 		e.Price = toEther(ae.BidAmount, ae.PaymentToken)
 	default:
 		e.Type = ae.EventType
