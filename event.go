@@ -110,7 +110,7 @@ func (e Event) FormatDing(layout Layout) string {
 	content += fmt.Sprintf("\n  时间: %s", e.Date)
 
 	content += fmt.Sprintf(
-		"\n地址: https://opensea.io/assets/%s/%s",
+		"\n  地址: https://opensea.io/assets/%s/%s",
 		strings.ToLower(e.Contract), e.Id,
 	)
 	if layout.ImagePreview {

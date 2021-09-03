@@ -25,7 +25,7 @@ type Rarity struct {
 }
 
 const (
-	columnsDing     = 4
+	//columnsDing     = 4
 	columnsDiscord  = 4
 	columnsTelegram = 4
 )
@@ -36,13 +36,8 @@ func (r Rarity) FormatDing() string {
   稀有度得分: %2.f`,
 		r.Rank, r.Score,
 	)
-	for i, trait := range r.Attributes {
-		if i%columnsDing == 0 {
-			content += "\n"
-		} else {
-			content += "\t"
-		}
-		content += fmt.Sprintf("%s: %.2f", trait.TraitType, trait.Score)
+	for _, trait := range r.Attributes {
+		content += fmt.Sprintf("\n  %s: %s, %.2f", trait.TraitType, trait.Value, trait.Score)
 	}
 	return content
 }
