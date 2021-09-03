@@ -107,7 +107,7 @@ func (e Event) FormatDing(layout Layout) string {
 		)
 	default:
 	}
-	content += fmt.Sprintf("\n  时间: %s", e.Date)
+	content += fmt.Sprintf("\n时间: %s", e.Date)
 
 	content += fmt.Sprintf(
 		"\n地址: https://opensea.io/assets/%s/%s",
