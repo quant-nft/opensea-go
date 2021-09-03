@@ -32,12 +32,12 @@ const (
 
 func (r Rarity) FormatDing() string {
 	content := fmt.Sprintf(`
-  稀有度排名: %d
-  稀有度得分: %2.f`,
+稀有度排名: %d
+稀有度得分: %2.f`,
 		r.Rank, r.Score,
 	)
 	for _, trait := range r.Attributes {
-		content += fmt.Sprintf("\n  %s: %s, %.2f", trait.TraitType, trait.Value, trait.Score)
+		content += fmt.Sprintf("\n%s: %s, %.2f", trait.TraitType, trait.Value, trait.Score)
 	}
 	return content
 }
@@ -61,17 +61,13 @@ func (r Rarity) FormatDiscord() string {
 
 func (r Rarity) FormatTelegram() string {
 	content := fmt.Sprintf(`
-  稀有度排名: %d
-  稀有度得分: %2.f`,
+
+稀有度排名: %d
+稀有度得分: %2.f`,
 		r.Rank, r.Score,
 	)
-	for i, trait := range r.Attributes {
-		if i%columnsTelegram == 0 {
-			content += "\n"
-		} else {
-			content += "\t"
-		}
-		content += fmt.Sprintf("%s: %.2f", trait.TraitType, trait.Score)
+	for _, trait := range r.Attributes {
+		content += fmt.Sprintf("\n%s: %s, %.2f", trait.TraitType, trait.Value, trait.Score)
 	}
 	return content
 }
