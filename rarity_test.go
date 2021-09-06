@@ -13,15 +13,15 @@ func TestRarityScore(t *testing.T) {
 			{
 				TokenId: 1,
 				Attributes: []Trait{
-					{TraitType: "A", Value: "a1"},
-					{TraitType: "B", Value: "b1"},
+					{Type: "A", Value: "a1"},
+					{Type: "B", Value: "b1"},
 				},
 			},
 			{
 				TokenId: 2,
 				Attributes: []Trait{
-					{TraitType: "A", Value: "a2"},
-					{TraitType: "B", Value: "b1"},
+					{Type: "A", Value: "a2"},
+					{Type: "B", Value: "b1"},
 				},
 			},
 		},

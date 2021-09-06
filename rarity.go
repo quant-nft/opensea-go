@@ -6,21 +6,22 @@ import (
 )
 
 type Trait struct {
-	TraitType string  `json:"traitType" bson:"trait_type"`
-	Value     string  `json:"value" bson:"value"`
-	Percent   float64 `json:"percent,omitempty" bson:"percent,omitempty"`
-	Score     float64 `json:"score,omitempty" bson:"score,omitempty"`
+	Type    string  `json:"type" bson:"type"`
+	Value   string  `json:"value" bson:"value"`
+	Percent float64 `json:"percent,omitempty" bson:"percent,omitempty"`
+	Score   float64 `json:"score,omitempty" bson:"score,omitempty"`
 }
 
 type Meta struct {
-	TokenId    int     `json:"tokenId" bson:"token_id"`
+	TokenId    int     `json:"tokenId" bson:"tokenId"`
 	Attributes []Trait `json:"attributes" bson:"attributes"`
 }
 
 type Rarity struct {
-	TokenId    int     `json:"tokenId" bson:"token_id"`
-	Rank       int     `json:"rank" bson:"rank"`
-	Score      float64 `json:"score" bson:"score"`
+	TokenId    int     `json:"tokenId" bson:"tokenId"`
+	Owner      string  `json:"owner,omitempty" bson:"owner,omitempty"`
+	Rank       int     `json:"rank,omitempty" bson:"rank,omitempty"`
+	Score      float64 `json:"score,omitempty" bson:"score,omitempty"`
 	Attributes []Trait `json:"attributes" bson:"attributes"`
 }
 
@@ -37,7 +38,7 @@ func (r Rarity) FormatDing() string {
 		r.Rank, r.Score,
 	)
 	for _, trait := range r.Attributes {
-		content += fmt.Sprintf("\n%s: %s, %.2f", trait.TraitType, trait.Value, trait.Score)
+		content += fmt.Sprintf("\n%s: %s, %.2f", trait.Type, trait.Value, trait.Score)
 	}
 	return content
 }
@@ -54,7 +55,7 @@ func (r Rarity) FormatDiscord() string {
 		} else {
 			content += "\t"
 		}
-		content += fmt.Sprintf("%s: %.2f", trait.TraitType, trait.Score)
+		content += fmt.Sprintf("%s: %.2f", trait.Type, trait.Score)
 	}
 	return content
 }
@@ -67,7 +68,7 @@ func (r Rarity) FormatTelegram() string {
 		r.Rank, r.Score,
 	)
 	for _, trait := range r.Attributes {
-		content += fmt.Sprintf("\n%s: %s, %.2f", trait.TraitType, trait.Value, trait.Score)
+		content += fmt.Sprintf("\n%s: %s, %.2f", trait.Type, trait.Value, trait.Score)
 	}
 	return content
 }
@@ -80,12 +81,12 @@ func RarityScore(metas []Meta) []Rarity {
 	sumOfTraits := make(map[string]map[string]int)
 	for _, m := range metas {
 		for _, t := range m.Attributes {
-			sumOfType[t.TraitType] += 1
-			if mt, ok := sumOfTraits[t.TraitType]; ok {
+			sumOfType[t.Type] += 1
+			if mt, ok := sumOfTraits[t.Type]; ok {
 				mt[t.Value] += 1
 			} else {
-				sumOfTraits[t.TraitType] = make(map[string]int)
-				sumOfTraits[t.TraitType][t.Value] += 1
+				sumOfTraits[t.Type] = make(map[string]int)
+				sumOfTraits[t.Type][t.Value] += 1
 			}
 		}
 	}
@@ -93,7 +94,7 @@ func RarityScore(metas []Meta) []Rarity {
 	for i := 0; i < len(metas); i++ {
 		var score float64
 		for j := 0; j < len(metas[i].Attributes); j++ {
-			traitType := metas[i].Attributes[j].TraitType
+			traitType := metas[i].Attributes[j].Type
 			traitValue := metas[i].Attributes[j].Value
 			metas[i].Attributes[j].Percent = float64(sumOfTraits[traitType][traitValue]) / float64(sumOfType[traitType])
 			metas[i].Attributes[j].Score = float64(sumOfType[traitType]) / float64(sumOfTraits[traitType][traitValue])
