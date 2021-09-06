@@ -52,68 +52,70 @@ func (e Event) FormatDing(layout Layout) string {
 	case EventSale:
 		content += fmt.Sprintf(
 			` 成交(Sale)
-  买家: %s
-  卖家: %s
-  价格: %s`,
+买家: %s
+卖家: %s
+价格: %s`,
 			e.To, e.From, e.Price,
 		)
 	case EventOffer:
 		content += fmt.Sprintf(
 			` 出价(Offer)
-  买家: %s
-  价格: %s`,
+买家: %s
+价格: %s`,
 			e.From, e.Price,
 		)
 	case EventBid:
 		content += fmt.Sprintf(
 			` 出价(Bid)
-  买家: %s
-  价格: %s`,
+买家: %s
+价格: %s`,
 			e.From, e.Price,
 		)
 	case EventTypeBidCancel:
 		content += fmt.Sprintf(
 			` 撤销出价(Bid Cancel)
-  买家: %s
-  价格: %s`,
+买家: %s
+价格: %s`,
 			e.From, e.Price,
 		)
 	case EventTransfer:
 		content += fmt.Sprintf(
 			` 转让(Transfer)
-  发送方: %s
-  接收方: %s`,
+发送方: %s
+接收方: %s`,
 			e.From, e.To,
 		)
 	case EventMint:
 		content += fmt.Sprintf(
 			` 铸造完成 (Mint)
-  接收方: %s`,
+接收方: %s`,
 			e.To,
 		)
 	case EventListCancel:
 		content += fmt.Sprintf(
 			` 取消拍卖(List Cancel)
-  卖家: %s
-  价格: %s`,
+卖家: %s
+价格: %s`,
 			e.From, e.Price,
 		)
 	case EventList:
 		content += fmt.Sprintf(
 			` 拍卖(List)
-  卖家: %s
-  价格: %s`,
+卖家: %s
+价格: %s`,
 			e.From, e.Price,
 		)
 	default:
 	}
-	content += fmt.Sprintf("\n  时间: %s", e.Date)
+	content += fmt.Sprintf("\n时间: %s", e.Date)
 
 	content += fmt.Sprintf(
-		"\n地址: https://opensea.io/assets/%s/%s\n预览图片: \n%s",
-		strings.ToLower(e.Contract),
-		e.Id, e.ImagePreviewUrl,
+		"\n地址: https://opensea.io/assets/%s/%s",
+		strings.ToLower(e.Contract), e.Id,
 	)
+	if layout.ImagePreview {
+		content += fmt.Sprintf("\n预览图片: %s", e.ImagePreviewUrl)
+	}
 
 	return content
 }
@@ -200,64 +202,64 @@ func (e Event) FormatTelegram(layout Layout) string {
 	case EventSale:
 		content += fmt.Sprintf(
 			` 成交(Sale)
-  买家: %s
-  卖家: %s
-  价格: %s`,
+买家: %s
+卖家: %s
+价格: %s`,
 			e.To, e.From, e.Price,
 		)
 	case EventOffer:
 		content += fmt.Sprintf(
 			` 出价(Offer)
-  买家: %s
-  价格: %s`,
+买家: %s
+价格: %s`,
 			e.From, e.Price,
 		)
 	case EventBid:
 		content += fmt.Sprintf(
 			` 出价(Bid)
-  买家: %s
-  价格: %s`,
+买家: %s
+价格: %s`,
 			e.From, e.Price,
 		)
 	case EventTypeBidCancel:
 		content += fmt.Sprintf(
 			` 撤销出价(Bid Cancel)
-  买家: %s
-  价格: %s`,
+买家: %s
+价格: %s`,
 			e.From, e.Price,
 		)
 	case EventTransfer:
 		content += fmt.Sprintf(
 			` 转让(Transfer)
-  发送方: %s
-  接收方: %s`,
+发送方: %s
+接收方: %s`,
 			e.From, e.To,
 		)
 	case EventMint:
 		content += fmt.Sprintf(
 			` 铸造完成 (Mint)
-  接收方: %s`,
+接收方: %s`,
 			e.To,
 		)
 	case EventList:
 		content += fmt.Sprintf(
 			` 拍卖(List)
-  卖家: %s
-  价格: %s`,
+卖家: %s
+价格: %s`,
 			e.From, e.Price,
 		)
 	case EventListCancel:
 		content += fmt.Sprintf(
 			` 取消拍卖(List Cancel)
-  卖家: %s
-  价格: %s`,
+卖家: %s
+价格: %s`,
 			e.From, e.Price,
 		)
 	default:
 	}
-	content += fmt.Sprintf("\n  时间: %s", e.Date)
+	content += fmt.Sprintf("\n时间: %s", e.Date)
 	if layout.ImagePreview {
-		content += fmt.Sprintf("\n地址: https://opensea.io/assets/%s/%s\n预览图片: \n%s", strings.ToLower(e.Contract), e.Id, e.ImagePreviewUrl)
+		content += fmt.Sprintf("\n地址: https://opensea.io/assets/%s/%s\n预览图片: %s", strings.ToLower(e.Contract), e.Id, e.ImagePreviewUrl)
 	}
 	return content
 }

@@ -155,38 +155,56 @@ func (ae AssetEvent) ToEvent() Event {
 	}
 	switch ae.EventType {
 	case EventTypeTransfer:
-		if ae.FromAccount.Address == "0x0000000000000000000000000000000000000000" {
-			e.Type = EventMint
-		} else {
+		if ae.FromAccount != nil && ae.FromAccount.Address != "0x0000000000000000000000000000000000000000" {
 			e.Type = EventTransfer
+		} else {
+			e.Type = EventMint
 		}
 		// Mint 和 Transfer 都没有价格需要展示
-		e.From = ae.FromAccount.String()
-		e.To = ae.ToAccount.String()
+		if ae.FromAccount != nil {
+			e.From = ae.FromAccount.String()
+		}
+		if ae.ToAccount != nil {
+			e.To = ae.ToAccount.String()
+		}
 	case EventTypeList:
 		e.Type = EventList
-		e.From = ae.FromAccount.String()
+		if ae.FromAccount != nil {
+			e.From = ae.FromAccount.String()
+		}
 		e.Price = toEther(ae.EndingPrice, ae.PaymentToken)
 	case EventTypeListCancel:
 		e.Type = EventListCancel
-		e.From = ae.FromAccount.String()
+		if ae.Seller != nil {
+			e.From = ae.Seller.String()
+		}
 		e.Price = toEther(ae.EndingPrice, ae.PaymentToken)
 	case EventTypeBid:
 		e.Type = EventBid
-		e.From = ae.FromAccount.String()
+		if ae.FromAccount != nil {
+			e.From = ae.FromAccount.String()
+		}
 		e.Price = toEther(ae.BidAmount, ae.PaymentToken)
 	case EventTypeBidCancel:
 		e.Type = EventBidCancel
-		e.From = ae.FromAccount.String()
+		if ae.FromAccount != nil {
+			e.From = ae.FromAccount.String()
+		}
 		e.Price = toEther(ae.TotalPrice, ae.PaymentToken)
 	case EventTypeSale:
 		e.Type = EventSale
 		e.Price = toEther(ae.TotalPrice, ae.PaymentToken)
-		e.From = ae.Seller.String()
-		e.To = ae.WinnerAccount.String()
+		if ae.Seller != nil {
+			e.From = ae.Seller.String()
+		}
+		if ae.WinnerAccount != nil {
+			e.To = ae.WinnerAccount.String()
+		}
 	case EventTypeOffer:
 		e.Type = EventOffer
-		e.From = ae.FromAccount.String()
+		if ae.FromAccount != nil {
+			e.From = ae.FromAccount.String()
+		}
 		e.Price = toEther(ae.BidAmount, ae.PaymentToken)
 	default:
 		e.Type = ae.EventType
