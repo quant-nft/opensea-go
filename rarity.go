@@ -22,6 +22,7 @@ type Rarity struct {
 	Owner      string  `json:"owner,omitempty" bson:"owner,omitempty"`
 	Rank       int     `json:"rank,omitempty" bson:"rank,omitempty"`
 	Score      float64 `json:"score,omitempty" bson:"score,omitempty"`
+	Plus       int     `json:"plus,omitempty" bson:"plus,omitempty"`
 	Attributes []Trait `json:"attributes" bson:"attributes"`
 }
 
