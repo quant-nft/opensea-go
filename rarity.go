@@ -6,7 +6,7 @@ import (
 )
 
 type Trait struct {
-	Type    string  `json:"type" bson:"type"`
+	Type    string  `json:"type,omitempty" bson:"type,omitempty"`
 	Value   string  `json:"value" bson:"value"`
 	Percent float64 `json:"percent,omitempty" bson:"percent,omitempty"`
 	Score   float64 `json:"score,omitempty" bson:"score,omitempty"`
@@ -39,7 +39,18 @@ func (r Rarity) FormatDing() string {
 		r.Rank, r.Score,
 	)
 	for _, trait := range r.Attributes {
-		content += fmt.Sprintf("\n%s: %s, %.2f", trait.Type, trait.Value, trait.Score)
+		if trait.Type != "" {
+			content += fmt.Sprintf("\n%s", trait.Type)
+		}
+		if trait.Type != "" && (trait.Value != "" || trait.Score != 0) {
+			content += ": "
+		}
+		if trait.Value != "" {
+			content += fmt.Sprintf("%s", trait.Value)
+		}
+		if trait.Score != 0 {
+			content += fmt.Sprintf(", %.2f", trait.Score)
+		}
 	}
 	return content
 }
@@ -62,16 +73,7 @@ func (r Rarity) FormatDiscord() string {
 }
 
 func (r Rarity) FormatTelegram() string {
-	content := fmt.Sprintf(`
-
-稀有度排名: %d
-稀有度得分: %2.f`,
-		r.Rank, r.Score,
-	)
-	for _, trait := range r.Attributes {
-		content += fmt.Sprintf("\n%s: %s, %.2f", trait.Type, trait.Value, trait.Score)
-	}
-	return content
+	return r.FormatDing()
 }
 
 // RarityScore calculate the rarity score like rarity.tools
