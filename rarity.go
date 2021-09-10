@@ -58,8 +58,8 @@ func (r Rarity) FormatDing() string {
 
 func (r Rarity) FormatDiscord() string {
 	content := fmt.Sprintf(`
-  稀有度排名: **%d**
-  稀有度得分: %2.f`,
+稀有度排名: **%d**
+稀有度得分: %2.f`,
 		r.Rank, r.Score,
 	)
 	for i, trait := range r.Attributes {
