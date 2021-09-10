@@ -39,8 +39,9 @@ func (r Rarity) FormatDing() string {
 		r.Rank, r.Score,
 	)
 	for _, trait := range r.Attributes {
+		content += "\n"
 		if trait.Type != "" {
-			content += fmt.Sprintf("\n%s", trait.Type)
+			content += fmt.Sprintf("%s", trait.Type)
 		}
 		if trait.Type != "" && (trait.Value != "" || trait.Score != 0) {
 			content += ": "
