@@ -68,7 +68,19 @@ func (r Rarity) FormatDiscord() string {
 		} else {
 			content += "\t"
 		}
-		content += fmt.Sprintf("%s: %.2f", trait.Type, trait.Score)
+		content += "\n"
+		if trait.Type != "" {
+			content += fmt.Sprintf("%s", trait.Type)
+		}
+		if trait.Type != "" && (trait.Value != "" || trait.Score != 0) {
+			content += ": "
+		}
+		if trait.Value != "" {
+			content += fmt.Sprintf("%s", trait.Value)
+		}
+		if trait.Score != 0 {
+			content += fmt.Sprintf(", %.2f", trait.Score)
+		}
 	}
 	return content
 }
